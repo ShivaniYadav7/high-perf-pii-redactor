@@ -45,7 +45,7 @@ public class RegexRedactor {
             }
 
             else if(matcher.group(2) != null) {
-                matcher.appendReplacement(sb,"[PHONE");
+                matcher.appendReplacement(sb,"[PHONE]");
             }
 
             else if(matcher.group(3) != null) {

@@ -47,7 +47,7 @@ public class LogGenerator {
                     return timestamp + "INFO User login: " + randomString(5) +"@test.com successfully.";
 
                 case 1: // PAN
-                    return timestamp + " DEBUG PAN verification for "+ randomPan() + "started.";
+                    return timestamp + " DEBUG PAN verification for "+ randomPan() + " started.";
 
                 case 2: //PHONE
                     return timestamp + "WARN Contact updated to "+ (9000000000L + random.nextInt(999999999)) + ".";

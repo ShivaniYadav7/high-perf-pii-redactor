@@ -1,10 +1,15 @@
 import java.io.*;
 
+// Key Features:
+// 1. O(n) Time Complexity
+// 2. O(1) Space Complexity (via Character Streaming)
+// 3. No Regex Backtracking
+
 public class PIIRedactor{
 
     public static void main(String[] args) throws Exception {
         if(args.length < 2) {
-            System.out.println("USE: Java PIIRedactor <input_file> <output_file>");
+            System.out.println("USE: java PIIRedactor <input_file> <output_file>");
             return;
         }
 
@@ -17,59 +22,52 @@ public class PIIRedactor{
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
 
-        String line;
-        while((line = reader.readLine()) != null) {
-            String redactedLog = parseAndRedact(line);
+        // The current token buffer
+        StringBuilder word = new StringBuilder();
 
-            writer.write(redactedLog);
-            writer.newLine();
+        int c;
+
+        // CORE STREAMING LOOP: Reads 1 char at a time from disk/buffer.
+        while((c = reader.read()) != -1) {
+            // The final output - redacted log
+
+            char character = (char) c;
+
+            // The Delimiter logic
+            if(isSeparator(character)) {
+                // We hit a separator. Process the token in the buffer.
+                if(word.length() > 0) {
+                    String processed = checkAndRedact(word);
+                    writer.write(processed);
+                    word.setLength(0);
+                }
+                // Appending the separator itself
+                writer.write(character);
+            } else{
+                // Build the token
+                word.append(character);
+            }
         }
+
+        // Handling "Last remained Survivor"
+        if(word.length() > 0) {
+            writer.write(checkAndRedact(word));
+        }  
     } catch (IOException e) {
         e.printStackTrace();
     }
+
 
     long endTime = System.currentTimeMillis();
     System.out.println("Without Regex Processing Time: "+ (endTime - startTime) + "ms");
 
     }
 
-    public static String parseAndRedact(String input) {
-        // The final output - redacted log
-        StringBuilder result = new StringBuilder();
-        // The current token buffer
-        StringBuilder word = new StringBuilder();
+    // --- HELPER FUNCTIONS ---
 
-        int n = input.length();
-
-        for(int i = 0; i < n; i++){
-            char c = input.charAt(i);
-
-            // The Delimiter logic
-            if(isSeparator(c)) {
-                // We hit a separator. Process the token in the buffer.
-                if(word.length() > 0) {
-                    String processed = checkAndRedact(word);
-                    result.append(processed);
-                    word.setLength(0);
-                }
-                // Appending the separator itself
-                result.append(c);
-            } else{
-                // Build the word
-                word.append(c);
-            }
-        }
-        if(word.length() > 0) {
-            result.append(checkAndRedact(word));
-        }
-
-        return result.toString();
-    }
-
-    // Core logic tokenize (No Regex)
-
+    // Determines if a character acts as a word delimiter.
     private static boolean isSeparator(char c) {
-        return c == ' ' || c == '\n' || c == '\t' || c == ',' || c == ';' || c == '!' || c == '?';
+        return c == ' ' || c == '\n' || c == '\t' || c == ',' || c == ';' || c == '!' || c == '?' || c == '.';
     }
 
     private static String checkAndRedact(StringBuilder token){
