@@ -67,17 +67,26 @@ public class PIIRedactor{
 
     // Determines if a character acts as a word delimiter.
     private static boolean isSeparator(char c) {
-        return c == ' ' || c == '\n' || c == '\t' || c == ',' || c == ';' || c == '!' || c == '?' || c == '.';
+        return c == ' ' || c == '\n' || c == '\t' || c == ',' || c == ';' || c == '!' || c == '?' || c == '\r';
     }
 
     private static String checkAndRedact(StringBuilder token){
         String s = token.toString();
 
-        if (isEmail(s)) return "[EMAIL]";
-        if (isPhoneNumber(s)) return "[PHONE]";
-        if (isPAN(s)) return "[PAN]";
+        // Edge Case: Word ends with a dot (e.g. "9876543210")
+        String punctuation = "";
 
-        return s;
+        if(s.endsWith(".")){
+            punctuation = ".";
+            s = s.substring(0, s.length() - 1);
+        }
+
+        if (isEmail(s)) return "[EMAIL]" + punctuation;
+        if (isPhoneNumber(s)) return "[PHONE]" + punctuation;
+        if (isPAN(s)) return "[PAN]" + punctuation;
+
+        // If not PII, return original string
+        return token.toString();
     }
 
     // Email Checker: Look for '@' and '.'
