@@ -1,3 +1,4 @@
+package legacy;
 import java.io.*;
 
 // Key Features:
@@ -133,7 +134,6 @@ public class PIIRedactor{
                 prevWasDot = false;
                 if (!Character.isLetterOrDigit(c) && c != '_' && c != '-' && c != '+') return false;
             }
-
         }
         return true;
     }

@@ -1,0 +1,19 @@
+# Gradle Build Folders (The 'node_modules' of Java)
+.gradle/
+build/
+app/build/
+
+# IDE Configuration Files
+.vscode/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS Hidden Files
+.DS_Store
+Thumbs.db
+
+# Ignore all local test logs generated during development
+*.log
