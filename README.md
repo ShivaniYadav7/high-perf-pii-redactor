@@ -72,7 +72,7 @@ java -jar pii-redactor.jar dirty_database_dump.log sanitized_output.log
 
 ### ⚙️ Architecture & Testing
 CI/CD Pipeline: Automated GitHub Actions pipeline runs tests on every PR.
-Unit Tests: JUnit 5 suite covering valid tokens, boundary punctuation email@test.com, and invalid structures.
+Unit Tests: JUnit 5 suite covering valid tokens, boundary punctuation `email@test.com`, and invalid structures.
 Time Complexity: O(N) where N = number of characters.
 
 ### 🛠️ Local Development
