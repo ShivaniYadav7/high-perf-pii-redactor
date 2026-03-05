@@ -28,6 +28,5 @@ public class Benchmark {
         System.out.println("File Size: 10 MB");
         System.out.println("Time Taken: " + duration + " ms");
         System.out.println("Throughput: " + (10000 / (duration > 0 ? duration : 1)) + " MB/second");
-        System.out.println("Memory Space Complexity: O(1) Constant");
     }
 }
